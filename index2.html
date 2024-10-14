@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Atrapa la Pelota</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        canvas {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Variables del juego
+        let barraWidth = 80;
+        let barraHeight = 10;
+        let barraX = (canvas.width - barraWidth) / 2;
+        let barraY = canvas.height - barraHeight - 20;
+        let barraSpeed = 10;
+
+        let pelotaRadius = 10;
+        let pelotaX = canvas.width / 2;
+        let pelotaY = pelotaRadius;
+        let pelotaSpeedY = 3;
+        let score = 0;
+
+        // Función para dibujar la barra
+        function dibujarBarra() {
+            ctx.fillStyle = "#00ff00";
+            ctx.fillRect(barraX, barraY, barraWidth, barraHeight);
+        }
+
+        // Función para dibujar la pelota
+        function dibujarPelota() {
+            ctx.beginPath();
+            ctx.arc(pelotaX, pelotaY, pelotaRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#ff0000";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Función para mover la barra con las teclas izquierda/derecha
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "ArrowLeft" && barraX > 0) {
+                barraX -= barraSpeed;
+            } else if (event.key === "ArrowRight" && barraX + barraWidth < canvas.width) {
+                barraX += barraSpeed;
+            }
+        });
+        // Función para reiniciar la posición de la pelota
+        function reiniciarPelota() {
+            pelotaX = Math.random() * (canvas.width - 2 * pelotaRadius) + pelotaRadius;
+            pelotaY = pelotaRadius;
+            pelotaSpeedY += 0.5; // Incrementa la velocidad de la pelota en cada reinicio
+        }
+
+        // Función principal del juego
+        function juego() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibuja la barra y la pelota
+            dibujarBarra();
+            dibujarPelota();
+
+            // Mueve la pelota
+            pelotaY += pelotaSpeedY;
+
+            // Verifica si la pelota toca la barra
+            if (
+                pelotaY + pelotaRadius >= barraY &&
+                pelotaX >= barraX &&
+                pelotaX <= barraX + barraWidth
+            ) {
+                reiniciarPelota();
+                score++;
+            }
+
+            // Verifica si la pelota toca el fondo
+            if (pelotaY + pelotaRadius > canvas.height) {
+                alert("¡Perdiste! Puntaje: " + score);
+                document.location.reload();
+            }
+
+            // Llama a la función de actualización
+            requestAnimationFrame(juego);
+        }
+        // Iniciar el juego
+       
+        <a 
+        href="https://createalink.com">create a link
+        </a>
+         // Iniciar el juegos
+        juego();
+    </script>
+</body>
+</html>
